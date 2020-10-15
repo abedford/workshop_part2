@@ -20,6 +20,8 @@ def calculate(par1, op, par2):
         return par1 - par2
     elif op == '/':
         return par1 // par2
+    elif op =='^':
+        return par1 ** par2
  
 with open("step3.txt", "r") as f:
     list_of_calculations = f.readlines()
