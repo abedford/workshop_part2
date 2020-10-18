@@ -16,7 +16,7 @@ def calculate(par1, op, par2):
         return par1 ** par2
 
  
-with open("step3.txt", "r") as f:
+with open("step4.txt", "r") as f:
     list_of_calculations = f.readlines()
 
 index = 1
@@ -25,6 +25,7 @@ print("There are {0} lines in this file.".format(len(list_of_calculations)))
 
 not_revisiting = True
 while index in range(1, len(list_of_calculations)) and not_revisiting:
+    print("\r\nStep {0}:".format(len(processed_indices )))
     # get the line in the list (we have to take off 1 because line numbers in the list don't start at 0) 
     line= list_of_calculations[index-1]
     line = line.strip() 
@@ -35,29 +36,26 @@ while index in range(1, len(list_of_calculations)) and not_revisiting:
     
     values = line.split()
 
+    print(line)
     if (values[1] == "calc"):
         param1int = int(values[3])
-        param2int = int(values[4])
-        print(line)
+        param2int = int(values[4])    
         new_line_number = calculate(param1int, values[2], param2int)
             
     elif (values[0] == "goto"):
         new_line_number = int(values[1])
-        print("Goto {0}".format(new_line_number))
     elif (values[0] == "remove"):
         new_line_number = int(values[1])
         line_to_remove = list_of_calculations[new_line_number-1]       
-        print("Removing line {0} which is {1}".format(new_line_number, line_to_remove))
+        print("Removing line {0} which is {1}".format(new_line_number, line_to_remove.strip()))
         if (0 <= new_line_number-1 < len(list_of_calculations)-1):
             list_of_calculations.remove(line_to_remove)
         new_line_number = index + 1
-        print("Setting next location to {0}".format(new_line_number))
-
     elif (values[0] == "replace"):
-        line_number_to_be_replaced = values[1]
-        line_number_to_replace = values[2]
+        line_number_to_be_replaced = int(values[1])
+        line_number_to_replace = int(values[2])
         print("Replacing line {0} with line {1}".format(line_number_to_be_replaced, line_number_to_replace ))
-        if ((0 <= line_number_to_be_replaced - 1 < len(list_of_calculations)-1) and (0 <= line_number_to_replace - 1 < len(list_of_calculations)-1)):
+        if ((0 <= (line_number_to_be_replaced - 1) < len(list_of_calculations)-1) and (0 <= (line_number_to_replace - 1) < len(list_of_calculations)-1)):
             line_to_replace = list_of_calculations[line_number_to_replace-1]
             list_of_calculations[line_number_to_be_replaced-1] = line_to_replace
         new_line_number = index+1
@@ -65,8 +63,9 @@ while index in range(1, len(list_of_calculations)) and not_revisiting:
         print("Got unexpected value: {0}".format(values[1]))
 
     processed_indices.append(index)
+    print("Added {0} to the processes indices list".format(index))
     print("Setting new index to {0}".format(new_line_number))
-    print("Have now processed {0} lines.".format(len(processed_indices )))
+    
     index = new_line_number 
 
 print("Processed {0} lines".format(processed_indices)) 
